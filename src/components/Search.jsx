@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
-import { fetchScienceMuseum } from "../apis/fetch";
+import { fetchScienceMuseum, fetchVam } from "../apis/fetch";
 import Result from "./Result";
+import { useNavigate } from "react-router-dom";
 
 const Search = () => {
+    let navigate = useNavigate()
     const [searchResults, setSeachResults] = useState([])
 
     useEffect(() => {
-        fetchScienceMuseum('/search/objects').then((res) => {
-            setSeachResults(res)
-        })
+        const fetchRequests = async () => {
+            const scienceData = await fetchScienceMuseum('/search/objects?page[size]=10')
+            const vamData = await fetchVam('/objects/search?page_size=10&images_exist=1')
+            setSeachResults([...scienceData, ...vamData.records])
+        }
+        fetchRequests()
     }, [])
 
     if (searchResults.length === 0) {
@@ -21,9 +26,12 @@ const Search = () => {
         return (
             <div className="Search">
               <h1>Search results</h1>
+              <button onClick={() => navigate('/')}>Search</button>
+              <button onClick={() => navigate('/collection')}>Collection</button>
               <ul>
                 {searchResults.map((res) => {
-                    return <Result result={res} key={res.id}/>
+                    if (res.systemNumber) return <Result result={res} key={res.systemNumber}/>
+                    else return <Result result={res} key={res.id}/>
                 })}
               </ul>
             </div>
