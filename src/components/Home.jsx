@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
     let navigate = useNavigate()
     const [searchTerm, setSearch] = useState('')
-
+    
     const handleSubmit = (e) => {
         e.preventDefault()
         if (!searchTerm) navigate(`/search/all`)
