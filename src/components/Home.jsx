@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
     let navigate = useNavigate()
     const [searchTerm, setSearch] = useState('')
-    
+
     const handleSubmit = (e) => {
         e.preventDefault()
         if (!searchTerm) navigate(`/search/all`)
@@ -18,6 +18,7 @@ const Home = () => {
             <input type="text" placeholder="Search..." onChange={(e) => setSearch(e.target.value)} value={searchTerm} />
             <button>Search</button>
           </form>
+          <button onClick={() => navigate('/tets')}>tets</button>
         </div>
       );
 }
