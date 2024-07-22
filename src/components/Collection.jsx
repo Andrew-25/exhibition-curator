@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CollectionContext } from "../CollectionContext";
+import Result from "./Result";
 
 const Collection = () => {
     let navigate = useNavigate()
     const [yourCollection, setYourCollection] = useState([])
-    const { state, setState } = useContext(CollectionContext);
+    const { state, setState } = useContext(CollectionContext)
 
     useEffect(() => {
         setYourCollection(state)
@@ -26,13 +27,7 @@ const Collection = () => {
                 <button onClick={() => navigate('/')}>Home</button>
                 <ul>
                     {yourCollection.map((res) => {
-                        return (
-                            <li key={res.id}>
-                                <h3>{res.name}</h3>
-                                <p>{res.description}</p>
-                                <img src={res.imageLink} alt={res.imageAlt} />
-                            </li>
-                        )
+                        return <Result result={res} listKey={res.id}/>
                     })}
                 </ul>
             </div>

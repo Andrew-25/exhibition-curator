@@ -1,29 +1,68 @@
-const Result = ({result}) => {
-    if (result.systemNumber) {
-        return (
-            <div className="Result">
-                <h3>{result['_primaryTitle']}</h3>
-                <p>{result.objectType}</p>
-                <img
-                    src={result['_images']['_primary_thumbnail']}
-                    alt={'alt'}
-                />
-                <p>Victoria and Albert</p>
-            </div>
-          );
-    } else {
-        return (
-            <div className="Result">
-                <h3>{result.attributes.description[0].value}</h3>
-                <p>{result.attributes.category[0].name}</p>
-                <img
-                    src={`https://coimages.sciencemuseumgroup.org.uk/${result.attributes.multimedia[0]['@processed'].medium_thumbnail.location}`}
-                    alt={result.attributes.description[0].value}
-                />
-                <p>Science museum group collection</p>
-            </div>
-          );
+import { useContext, useEffect, useState } from "react";
+import { CollectionContext } from "../CollectionContext";
+
+const Result = ({result, listKey}) => {
+    const [resDetails, setResDetails] = useState({})
+    const { state, setState } = useContext(CollectionContext)
+    const [inCollection, setInCollection] = useState(false)
+
+    useEffect(() => {
+        setInCollection(state.some(c => c.id === listKey))
+        if (result.systemNumber) {
+            setResDetails({
+                title: result['_primaryTitle'],
+                description: result.objectType,
+                imgLink: result['_images']['_primary_thumbnail'],
+                imgAlt: 'alt',
+                museum: 'Victoria and Albert'
+            })
+        } else if (result.curatorWebsite) {
+            setResDetails({
+                title: result.name,
+                description: result.description,
+                imgLink: result.imageLink,
+                imgAlt: result.imageAlt,
+                museum: result.museum
+            })
+        } else {
+            setResDetails({
+                title: result.attributes.description[0].value,
+                description: result.attributes.category[0].name,
+                imgLink: `https://coimages.sciencemuseumgroup.org.uk/${result.attributes.multimedia[0]['@processed'].medium_thumbnail.location}`,
+                imgAlt: result.attributes.description[0].value,
+                museum: 'Science Museum Group'
+            })
+        }
+    }, [])
+    
+    const handleClick = () => {
+        if (inCollection) {
+            setInCollection(false)
+            setState(state.filter(c => c.id !== listKey))
+        } else {
+            setInCollection(true)
+            const newObject = {
+                id: listKey,
+                name: resDetails.title,
+                description: resDetails.description,
+                imageLink: resDetails.imgLink,
+                imageAlt: resDetails.imgAlt,
+                museum: resDetails.museum,
+                curatorWebsite: true
+            }
+            setState([...state, newObject])
+        }
     }
+
+    return (
+        <li key={listKey}>
+            <h3>{resDetails.title}</h3>
+            <p>{resDetails.description}</p>
+            <p>{resDetails.museum}</p>
+            <img src={resDetails.imgLink} alt={resDetails.imgAlt} />
+            <button onClick={handleClick}>{inCollection ? 'Remove from collection' : 'Add to collection'}</button>
+        </li>
+    )
 }
 
 export default Result

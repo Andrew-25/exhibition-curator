@@ -8,8 +8,10 @@ export const CollectionProvider = ({ children }) => {
       id: 'example',
       name: 'example name',
       description: 'example description',
-      imageLink: 'value',
-      imageAlt: 'example image alt'
+      imageLink: 'broken link',
+      imageAlt: 'example image alt',
+      museum: 'example museum',
+      curatorWebsite: true
     }
   ]);
 

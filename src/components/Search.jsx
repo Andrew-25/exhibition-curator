@@ -30,8 +30,8 @@ const Search = () => {
               <button onClick={() => navigate('/collection')}>Your Collection</button>
               <ul>
                 {searchResults.map((res) => {
-                    if (res.systemNumber) return <Result result={res} key={res.systemNumber}/>
-                    else return <Result result={res} key={res.id}/>
+                    if (res.systemNumber) return <Result result={res} listKey={res.systemNumber}/>
+                    else return <Result result={res} listKey={res.id}/>
                 })}
               </ul>
             </div>
