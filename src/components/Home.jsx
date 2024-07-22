@@ -18,7 +18,7 @@ const Home = () => {
             <input type="text" placeholder="Search..." onChange={(e) => setSearch(e.target.value)} value={searchTerm} />
             <button>Search</button>
           </form>
-          <button onClick={() => navigate('/tets')}>tets</button>
+          <button onClick={() => navigate('/collection')}>Your Collection</button>
         </div>
       );
 }

@@ -26,8 +26,8 @@ const Search = () => {
         return (
             <div className="Search">
               <h1>Search results</h1>
-              <button onClick={() => navigate('/')}>Search</button>
-              <button onClick={() => navigate('/collection')}>Collection</button>
+              <button onClick={() => navigate('/')}>Home</button>
+              <button onClick={() => navigate('/collection')}>Your Collection</button>
               <ul>
                 {searchResults.map((res) => {
                     if (res.systemNumber) return <Result result={res} key={res.systemNumber}/>
