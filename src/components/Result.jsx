@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { CollectionContext } from "../CollectionContext";
 
-const Result = ({result, listKey}) => {
+const Result = ({result, listKey, yourCollection, setYourCollection}) => {
     const [resDetails, setResDetails] = useState({})
     const { state, setState } = useContext(CollectionContext)
     const [inCollection, setInCollection] = useState(false)
@@ -38,6 +38,7 @@ const Result = ({result, listKey}) => {
     const handleClick = () => {
         if (inCollection) {
             setInCollection(false)
+            setYourCollection(yourCollection.filter(c => c.id !== listKey))
             setState(state.filter(c => c.id !== listKey))
         } else {
             setInCollection(true)

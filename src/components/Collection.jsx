@@ -10,7 +10,7 @@ const Collection = () => {
 
     useEffect(() => {
         setYourCollection(state)
-    }, [])
+    }, [yourCollection])
 
     if (yourCollection.length === 0) {
         return (
@@ -27,7 +27,7 @@ const Collection = () => {
                 <button onClick={() => navigate('/')}>Home</button>
                 <ul>
                     {yourCollection.map((res) => {
-                        return <Result result={res} listKey={res.id}/>
+                        return <Result result={res} listKey={res.id} key={res.id} yourCollection={yourCollection} setYourCollection={setYourCollection}/>
                     })}
                 </ul>
             </div>
