@@ -1,0 +1,51 @@
+* {
+    font-family: 'Lucida Handwriting', cursive;
+}
+
+.home {
+    background-color: white;
+    margin: 2rem;
+    padding: 2rem;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+button {
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+.search {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+form button {
+    margin-top: 10px;
+}
+
+form input {
+    width: 75%;
+    border: 1px solid;
+    border-color: rgb(100, 100, 100);
+    border-radius: 20px;
+    padding: 5px 15px;
+}
+
+form input::placeholder {
+    color: rgb(100, 100, 100);
+}
+
+.nav {
+    display: flex;
+    justify-content: right;
+}

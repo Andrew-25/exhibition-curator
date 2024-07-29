@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import './Home.css'
 
 const Home = () => {
     let navigate = useNavigate()
@@ -12,13 +13,15 @@ const Home = () => {
     }
 
     return (
-        <div className="Home">
+        <div className="home">
+          <div className="nav">
+            <button onClick={() => navigate('/collection')}>Your Collection</button>
+          </div>
           <h1>Exhibition Curator</h1>
-          <form onSubmit={(e) => handleSubmit(e)}>
+          <form onSubmit={(e) => handleSubmit(e)} className="search">
             <input type="text" placeholder="Search..." onChange={(e) => setSearch(e.target.value)} value={searchTerm} />
             <button>Search</button>
           </form>
-          <button onClick={() => navigate('/collection')}>Your Collection</button>
         </div>
       );
 }
