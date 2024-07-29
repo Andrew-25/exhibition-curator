@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { CollectionContext } from "../CollectionContext";
+import './Result.css'
 
 const Result = ({result, listKey, yourCollection, setYourCollection}) => {
     const [resDetails, setResDetails] = useState({})
@@ -56,7 +57,7 @@ const Result = ({result, listKey, yourCollection, setYourCollection}) => {
     }
 
     return (
-        <li key={listKey}>
+        <li key={listKey} className="result">
             <h3>{resDetails.title}</h3>
             <p>{resDetails.description}</p>
             <p>{resDetails.museum}</p>
