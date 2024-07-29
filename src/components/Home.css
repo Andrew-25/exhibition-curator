@@ -21,7 +21,7 @@ button {
     margin: 0;
 }
 
-.search {
+.searchForm {
     display: flex;
     flex-direction: column;
     padding: 10px;

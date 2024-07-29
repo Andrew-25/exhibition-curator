@@ -18,7 +18,7 @@ const Home = () => {
             <button onClick={() => navigate('/collection')}>Your Collection</button>
           </div>
           <h1>Exhibition Curator</h1>
-          <form onSubmit={(e) => handleSubmit(e)} className="search">
+          <form onSubmit={(e) => handleSubmit(e)} className="searchForm">
             <input type="text" placeholder="Search..." onChange={(e) => setSearch(e.target.value)} value={searchTerm} />
             <button>Search</button>
           </form>

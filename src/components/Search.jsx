@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchScienceMuseum, fetchVam } from "../apis/fetch";
 import Result from "./Result";
 import { useLocation, useNavigate } from "react-router-dom";
+import './Search.css'
 
 const Search = () => {
     let navigate = useNavigate()
@@ -31,16 +32,18 @@ const Search = () => {
 
     if (searchResults.length === 0) {
         return (
-            <div>
+            <div className="search">
                 <h1>Loading...</h1>
             </div>
         )
     } else {
         return (
-            <div className="Search">
+            <div className="search">
+              <div className="nav">
+                <button onClick={() => navigate('/')}>Home</button>
+                <button onClick={() => navigate('/collection')}>Your Collection</button>
+              </div>
               <h1>Search results</h1>
-              <button onClick={() => navigate('/')}>Home</button>
-              <button onClick={() => navigate('/collection')}>Your Collection</button>
               <button hidden={pageNo < 2} onClick={() => prevPage()}>Prev</button>
               <p>Page: {pageNo}</p>
               <button onClick={() => nextPage()}>Next</button>
