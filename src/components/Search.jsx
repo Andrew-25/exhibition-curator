@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { fetchScienceMuseum, fetchVam } from "../apis/fetch";
 import Result from "./Result";
-import { useLocation, useNavigate } from "react-router-dom";
-import './Search.css'
 import Nav from "./Nav";
+import './css/Search.css'
+import SearchForm from "./SearchForm";
 
 const Search = () => {
-    let navigate = useNavigate()
     let location = useLocation()
     const [searchResults, setSearchResults] = useState([])
     const [pageNo, setPageNo] = useState(1)
@@ -30,7 +30,7 @@ const Search = () => {
             setLoadingNextPage(false)
         }
         fetchRequests()
-    }, [pageNo])
+    }, [pageNo, location])
 
     const prevPage = () => {
         if (!loadingNextPage) {
@@ -57,6 +57,7 @@ const Search = () => {
             <div className="search">
               <Nav />
               <h1>Search results</h1>
+              <SearchForm />
               <button hidden={pageNo < 2} onClick={() => prevPage()}>Prev</button>
               <p>Page: {`${pageNo}/${totalPages}`}</p>
               <button hidden={pageNo === totalPages} onClick={() => nextPage()}>Next</button>

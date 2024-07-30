@@ -2,8 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CollectionContext } from "../CollectionContext";
 import Result from "./Result";
-import './Collection.css'
 import Nav from "./Nav";
+import './css/Collection.css'
 
 const Collection = () => {
     let navigate = useNavigate()

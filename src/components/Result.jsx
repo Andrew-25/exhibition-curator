@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { CollectionContext } from "../CollectionContext";
-import './Result.css'
+import './css/Result.css'
 
 const Result = ({result, listKey, yourCollection, setYourCollection}) => {
     const [resDetails, setResDetails] = useState({})
