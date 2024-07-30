@@ -3,12 +3,15 @@ import { fetchScienceMuseum, fetchVam } from "../apis/fetch";
 import Result from "./Result";
 import { useLocation, useNavigate } from "react-router-dom";
 import './Search.css'
+import Nav from "./Nav";
 
 const Search = () => {
     let navigate = useNavigate()
     let location = useLocation()
     const [searchResults, setSearchResults] = useState([])
     const [pageNo, setPageNo] = useState(1)
+    const [totalPages, setTotalPages] = useState(1)
+    const [loadingNextPage, setLoadingNextPage] = useState(false)
 
     useEffect(() => {
         let scienceSearch = `/search/objects?page[size]=10&page[number]=${pageNo - 1}`
@@ -22,31 +25,41 @@ const Search = () => {
         const fetchRequests = async () => {
             const scienceData = await fetchScienceMuseum(scienceSearch)
             const vamData = await fetchVam(vamSearch)
-            setSearchResults([...scienceData, ...vamData.records])
+            setSearchResults([...scienceData.data, ...vamData.records])
+            setTotalPages(Math.max(scienceData.meta.total_pages, vamData.info.pages))
+            setLoadingNextPage(false)
         }
         fetchRequests()
     }, [pageNo])
 
-    const prevPage = () => setPageNo(pageNo - 1)
-    const nextPage = () => setPageNo(pageNo + 1)
+    const prevPage = () => {
+        if (!loadingNextPage) {
+            setPageNo(pageNo - 1)
+            setLoadingNextPage(true)
+        }
+    }
+    const nextPage = () => {
+        if (!loadingNextPage) {
+            setPageNo(pageNo + 1)
+            setLoadingNextPage(true)
+        }
+    }
 
     if (searchResults.length === 0) {
         return (
             <div className="search">
-                <h1>Loading...</h1>
+                <Nav />
+                <h2>Loading...</h2>
             </div>
         )
     } else {
         return (
             <div className="search">
-              <div className="nav">
-                <button onClick={() => navigate('/')}>Home</button>
-                <button onClick={() => navigate('/collection')}>Your Collection</button>
-              </div>
+              <Nav />
               <h1>Search results</h1>
               <button hidden={pageNo < 2} onClick={() => prevPage()}>Prev</button>
-              <p>Page: {pageNo}</p>
-              <button onClick={() => nextPage()}>Next</button>
+              <p>Page: {`${pageNo}/${totalPages}`}</p>
+              <button hidden={pageNo === totalPages} onClick={() => nextPage()}>Next</button>
               <ul>
                 {searchResults.map((res) => {
                     if (res.systemNumber) return <Result result={res} listKey={res.systemNumber} key={res.systemNumber}/>

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { CollectionContext } from "../CollectionContext";
 import Result from "./Result";
 import './Collection.css'
+import Nav from "./Nav";
 
 const Collection = () => {
     let navigate = useNavigate()
@@ -16,9 +17,7 @@ const Collection = () => {
     if (yourCollection.length === 0) {
         return (
             <div className="collection">
-                <div className="nav">
-                    <button onClick={() => navigate('/')}>Home</button>
-                </div>
+                <Nav />
                 <h1>Your Collection</h1>
                 <h3>You have no items in you collection.</h3>
             </div>
@@ -26,9 +25,7 @@ const Collection = () => {
     } else {
         return (
             <div className="collection">
-                <div className="nav">
-                    <button onClick={() => navigate('/')}>Home</button>
-                </div>
+                <Nav />
                 <h1>Your Collection</h1>
                 <ul>
                     {yourCollection.map((res) => {

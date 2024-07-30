@@ -44,8 +44,3 @@ form input {
 form input::placeholder {
     color: rgb(100, 100, 100);
 }
-
-.nav {
-    display: flex;
-    justify-content: right;
-}

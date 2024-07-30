@@ -26,10 +26,12 @@ const Result = ({result, listKey, yourCollection, setYourCollection}) => {
                 museum: result.museum
             })
         } else {
+            let imgLink = 'no image'
+            if (result.attributes.multimedia) imgLink = `https://coimages.sciencemuseumgroup.org.uk/${result.attributes.multimedia[0]['@processed'].medium_thumbnail.location}`
             setResDetails({
                 title: result.attributes.description[0].value,
                 description: result.attributes.category[0].name,
-                imgLink: `https://coimages.sciencemuseumgroup.org.uk/${result.attributes.multimedia[0]['@processed'].medium_thumbnail.location}`,
+                imgLink: imgLink,
                 imgAlt: result.attributes.description[0].value,
                 museum: 'Science Museum Group'
             })

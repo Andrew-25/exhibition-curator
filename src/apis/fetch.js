@@ -11,7 +11,7 @@ const fetchScienceMuseum = async (urlSearch) => {
         }
       })
       .then((json) => {
-        fetchedData = json.data
+        fetchedData = json
       })
       .catch((err) => {
         console.error(err);
