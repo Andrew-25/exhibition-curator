@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { fetchScienceMuseum, fetchVam } from "../apis/fetch";
 import Result from "./Result";
 import Nav from "./Nav";
-import './css/Search.css'
 import SearchForm from "./SearchForm";
+import './css/Search.css'
 
 const Search = () => {
     let location = useLocation()
@@ -12,6 +12,7 @@ const Search = () => {
     const [pageNo, setPageNo] = useState(1)
     const [totalPages, setTotalPages] = useState(1)
     const [loadingNextPage, setLoadingNextPage] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         let scienceSearch = `/search/objects?page[size]=10&page[number]=${pageNo - 1}`
@@ -23,11 +24,18 @@ const Search = () => {
         }
         
         const fetchRequests = async () => {
+            setIsLoading(true)
             const scienceData = await fetchScienceMuseum(scienceSearch)
             const vamData = await fetchVam(vamSearch)
-            setSearchResults([...scienceData.data, ...vamData.records])
+
+            if (!scienceData && !vamData) setSearchResults([])
+            else if (!scienceData) setSearchResults(vamData.records)
+            else if (!vamData) setSearchResults(scienceData.data)
+            else setSearchResults([...scienceData.data, ...vamData.records])
+
             setTotalPages(Math.max(scienceData.meta.total_pages, vamData.info.pages))
             setLoadingNextPage(false)
+            setIsLoading(false)
         }
         fetchRequests()
     }, [pageNo, location])
@@ -45,11 +53,20 @@ const Search = () => {
         }
     }
 
-    if (searchResults.length === 0) {
+    if (isLoading) {
         return (
             <div className="search">
                 <Nav />
                 <h2>Loading...</h2>
+            </div>
+        )
+    } else if (searchResults.length === 0 && !isLoading) {
+        return (
+            <div className="search">
+                <Nav />
+                <h1>Search results</h1>
+                <SearchForm />
+                <h2>No results for {location.pathname.slice(8)}.</h2>
             </div>
         )
     } else {
