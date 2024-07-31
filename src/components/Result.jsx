@@ -6,6 +6,7 @@ const Result = ({result, listKey, yourCollection, setYourCollection}) => {
     const [resDetails, setResDetails] = useState({})
     const { state, setState } = useContext(CollectionContext)
     const [inCollection, setInCollection] = useState(false)
+    const [inExhibition, setInExhibition] = useState(false)
 
     useEffect(() => {
         setInCollection(state.some(c => c.id === listKey))
@@ -18,12 +19,14 @@ const Result = ({result, listKey, yourCollection, setYourCollection}) => {
                 museum: 'Victoria and Albert'
             })
         } else if (result.curatorWebsite) {
+            setInExhibition(result.inExhibition)
             setResDetails({
                 title: result.name,
                 description: result.description,
                 imgLink: result.imageLink,
                 imgAlt: result.imageAlt,
-                museum: result.museum
+                museum: result.museum,
+                inExhibition: result.inExhibition
             })
         } else {
             let imgLink = 'no image'
@@ -38,7 +41,7 @@ const Result = ({result, listKey, yourCollection, setYourCollection}) => {
         }
     }, [])
     
-    const handleClick = () => {
+    const handleCollectionClick = () => {
         if (inCollection) {
             setInCollection(false)
             setYourCollection(yourCollection.filter(c => c.id !== listKey))
@@ -52,21 +55,53 @@ const Result = ({result, listKey, yourCollection, setYourCollection}) => {
                 imageLink: resDetails.imgLink,
                 imageAlt: resDetails.imgAlt,
                 museum: resDetails.museum,
-                curatorWebsite: true
+                curatorWebsite: true,
+                inExhibition: false
             }
             setState([...state, newObject])
         }
     }
 
-    return (
-        <li key={listKey} className="result">
-            <h3>{resDetails.title}</h3>
-            <p>{resDetails.description}</p>
-            <p>{resDetails.museum}</p>
-            <img src={resDetails.imgLink} alt={resDetails.imgAlt} />
-            <button onClick={handleClick}>{inCollection ? 'Remove from collection' : 'Add to collection'}</button>
-        </li>
-    )
+    const handleExhibitionClick = () => {
+        if (inExhibition) {
+            setInExhibition(false)
+            const newCollection = state.map((c) => {
+                if (c.id === listKey) c.inExhibition = false
+                return c
+            })
+            setState(newCollection)
+        } else {
+            setInExhibition(true)
+            const newCollection = [...state].map((c) => {
+                if (c.id === listKey) c.inExhibition = true
+                return c
+            })
+            setState(newCollection)
+        }
+    }
+
+    if (result.curatorWebsite) {
+        return (
+            <li key={listKey} className="result">
+                <h3>{resDetails.title}</h3>
+                <p>{resDetails.description}</p>
+                <p>{resDetails.museum}</p>
+                <img src={resDetails.imgLink} alt={resDetails.imgAlt} />
+                <button onClick={handleCollectionClick}>{inCollection ? 'Remove from collection' : 'Add to collection'}</button>
+                <button onClick={handleExhibitionClick}>{inExhibition ? 'Remove from exhibition' : 'Add to exhibition'}</button>
+            </li>
+        )
+    } else {
+        return (
+            <li key={listKey} className="result">
+                <h3>{resDetails.title}</h3>
+                <p>{resDetails.description}</p>
+                <p>{resDetails.museum}</p>
+                <img src={resDetails.imgLink} alt={resDetails.imgAlt} />
+                <button onClick={handleCollectionClick}>{inCollection ? 'Remove from collection' : 'Add to collection'}</button>
+            </li>
+        )
+    }
 }
 
 export default Result
