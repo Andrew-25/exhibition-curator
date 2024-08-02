@@ -27,7 +27,7 @@ const Collection = () => {
                 <h2>You have no items in you {showingExhibition ? 'Exhibition' : 'Collection'}.</h2> :
                 <ul>
                     {yourCollection.map((res) => {
-                        return <Result result={res} listKey={res.id} key={res.id} yourCollection={yourCollection} setYourCollection={setYourCollection}/>
+                        return <Result result={res} listKey={res.id} key={res.id}/>
                     })}
                 </ul>
             }

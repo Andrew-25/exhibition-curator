@@ -22,6 +22,7 @@ const Object = () => {
             }
         }
         fetchRequest()
+        console.log(objectData.images);
     }, [])
 
     if (museum === 'Science Museum Group') {
@@ -41,10 +42,10 @@ const Object = () => {
         return (
             <div className="object">
                 <Nav />
-                <h1>{objectData['_primaryTitle']}</h1>
+                <h1>{objectData.titles[0].title}</h1>
                 <div className="centered"><img
-                    src={objectData['_images']['_primary_thumbnail']}
-                    alt={objectData['_primaryTitle']}
+                    src={`https://framemark.vam.ac.uk/collections/${objectData.images[0]}/full/full/0/default.jpg`}
+                    alt={objectData.titles[0].title}
                 /></div>
                 <h3>{museum}</h3>
                 <p>{objectData.objectType}</p>

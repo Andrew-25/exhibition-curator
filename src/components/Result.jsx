@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { CollectionContext } from "../CollectionContext";
 import './css/Result.css'
 
-const Result = ({result, listKey, yourCollection, setYourCollection}) => {
+const Result = ({result, listKey}) => {
     let navigate = useNavigate()
     const [resDetails, setResDetails] = useState({})
     const { state, setState } = useContext(CollectionContext)
@@ -46,7 +46,6 @@ const Result = ({result, listKey, yourCollection, setYourCollection}) => {
     const handleCollectionClick = useCallback(() => {
         if (inCollection) {
             setInCollection(false)
-            setYourCollection(yourCollection.filter(c => c.id !== listKey))
             setState(state.filter(c => c.id !== listKey))
         } else {
             setInCollection(true)
@@ -62,7 +61,7 @@ const Result = ({result, listKey, yourCollection, setYourCollection}) => {
             }
             setState([...state, newObject])
         }
-    }, [inCollection, listKey, resDetails, setYourCollection, state, setState, yourCollection])
+    }, [inCollection, listKey, resDetails, state, setState])
 
     const handleExhibitionClick = useCallback(() => {
         setInExhibition(!inExhibition)
@@ -74,14 +73,22 @@ const Result = ({result, listKey, yourCollection, setYourCollection}) => {
 
     return (
         <li key={listKey} className="result">
-            <h3 onClick={() => navigate(`/object/${listKey}`)}>{resDetails.title}</h3>
-            <p>{resDetails.description}</p>
-            <p>{resDetails.museum}</p>
-            <img src={resDetails.imgLink} alt={resDetails.imgAlt} />
-            <button onClick={handleCollectionClick}>{inCollection ? 'Remove from collection' : 'Add to collection'}</button>
-            {result.curatorWebsite ? 
-                <button onClick={handleExhibitionClick}>{inExhibition ? 'Remove from exhibition' : 'Add to exhibition'}</button> : null
-            }
+            <div className="res-content">
+                <div className="res-img-container">
+                    <img src={resDetails.imgLink} alt={resDetails.imgAlt}/>
+                </div>
+                <div className="res-text">
+                    <h3 onClick={() => navigate(`/object/${listKey}`)}>{resDetails.title}</h3>
+                    <p>{resDetails.description}</p>
+                    <p>{resDetails.museum}</p>
+                </div>
+                <div className="res-buttons">
+                    <button onClick={handleCollectionClick}>{inCollection ? 'Remove from collection' : 'Add to collection'}</button>
+                    {result.curatorWebsite ? 
+                        <button onClick={handleExhibitionClick}>{inExhibition ? 'Remove from exhibition' : 'Add to exhibition'}</button> : null
+                    }
+                </div>
+            </div>
         </li>
     )
 }
