@@ -1,8 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { CollectionContext } from "../CollectionContext";
 import './css/Result.css'
 
 const Result = ({result, listKey, yourCollection, setYourCollection}) => {
+    let navigate = useNavigate()
     const [resDetails, setResDetails] = useState({})
     const { state, setState } = useContext(CollectionContext)
     const [inCollection, setInCollection] = useState(false)
@@ -15,7 +17,7 @@ const Result = ({result, listKey, yourCollection, setYourCollection}) => {
                 title: result['_primaryTitle'],
                 description: result.objectType,
                 imgLink: result['_images']['_primary_thumbnail'],
-                imgAlt: 'alt',
+                imgAlt: result['_primaryTitle'],
                 museum: 'Victoria and Albert'
             })
         } else if (result.curatorWebsite) {
@@ -39,9 +41,9 @@ const Result = ({result, listKey, yourCollection, setYourCollection}) => {
                 museum: 'Science Museum Group'
             })
         }
-    }, [])
-    
-    const handleCollectionClick = () => {
+    }, [state, result, listKey])
+
+    const handleCollectionClick = useCallback(() => {
         if (inCollection) {
             setInCollection(false)
             setYourCollection(yourCollection.filter(c => c.id !== listKey))
@@ -60,48 +62,28 @@ const Result = ({result, listKey, yourCollection, setYourCollection}) => {
             }
             setState([...state, newObject])
         }
-    }
+    }, [inCollection, listKey, resDetails, setYourCollection, state, setState, yourCollection])
 
-    const handleExhibitionClick = () => {
-        if (inExhibition) {
-            setInExhibition(false)
-            const newCollection = state.map((c) => {
-                if (c.id === listKey) c.inExhibition = false
-                return c
-            })
-            setState(newCollection)
-        } else {
-            setInExhibition(true)
-            const newCollection = [...state].map((c) => {
-                if (c.id === listKey) c.inExhibition = true
-                return c
-            })
-            setState(newCollection)
-        }
-    }
+    const handleExhibitionClick = useCallback(() => {
+        setInExhibition(!inExhibition)
+        setState(state.map((c) => {
+            if (c.id === listKey) c.inExhibition = !inExhibition
+            return c
+        }))
+    }, [inExhibition, listKey, state, setState])
 
-    if (result.curatorWebsite) {
-        return (
-            <li key={listKey} className="result">
-                <h3>{resDetails.title}</h3>
-                <p>{resDetails.description}</p>
-                <p>{resDetails.museum}</p>
-                <img src={resDetails.imgLink} alt={resDetails.imgAlt} />
-                <button onClick={handleCollectionClick}>{inCollection ? 'Remove from collection' : 'Add to collection'}</button>
-                <button onClick={handleExhibitionClick}>{inExhibition ? 'Remove from exhibition' : 'Add to exhibition'}</button>
-            </li>
-        )
-    } else {
-        return (
-            <li key={listKey} className="result">
-                <h3>{resDetails.title}</h3>
-                <p>{resDetails.description}</p>
-                <p>{resDetails.museum}</p>
-                <img src={resDetails.imgLink} alt={resDetails.imgAlt} />
-                <button onClick={handleCollectionClick}>{inCollection ? 'Remove from collection' : 'Add to collection'}</button>
-            </li>
-        )
-    }
+    return (
+        <li key={listKey} className="result">
+            <h3 onClick={() => navigate(`/object/${listKey}`)}>{resDetails.title}</h3>
+            <p>{resDetails.description}</p>
+            <p>{resDetails.museum}</p>
+            <img src={resDetails.imgLink} alt={resDetails.imgAlt} />
+            <button onClick={handleCollectionClick}>{inCollection ? 'Remove from collection' : 'Add to collection'}</button>
+            {result.curatorWebsite ? 
+                <button onClick={handleExhibitionClick}>{inExhibition ? 'Remove from exhibition' : 'Add to exhibition'}</button> : null
+            }
+        </li>
+    )
 }
 
 export default Result
