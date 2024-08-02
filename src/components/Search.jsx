@@ -75,15 +75,22 @@ const Search = () => {
               <Nav />
               <h1>Search results</h1>
               <SearchForm />
-              <button hidden={pageNo < 2} onClick={() => prevPage()}>Prev</button>
-              <p>Page: {`${pageNo}/${totalPages}`}</p>
-              <button hidden={pageNo === totalPages} onClick={() => nextPage()}>Next</button>
+              <div className="pg-nos">
+                <button className={pageNo < 2 ? 'hidden' : ''} onClick={() => prevPage()}>Prev</button>
+                <p>Page: {`${pageNo}/${totalPages}`}</p>
+                <button className={pageNo === totalPages ? 'hidden' : ''} onClick={() => nextPage()}>Next</button>
+              </div>
               <ul>
                 {searchResults.map((res) => {
                     if (res.systemNumber) return <Result result={res} listKey={res.systemNumber} key={res.systemNumber}/>
                     else return <Result result={res} listKey={res.id} key={res.id}/>
                 })}
               </ul>
+              <div className="pg-nos">
+                <button className={pageNo < 2 ? 'hidden' : ''} onClick={() => prevPage()}>Prev</button>
+                <p>Page: {`${pageNo}/${totalPages}`}</p>
+                <button className={pageNo === totalPages ? 'hidden' : ''} onClick={() => nextPage()}>Next</button>
+              </div>
             </div>
           );
     }

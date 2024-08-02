@@ -75,10 +75,10 @@ const Result = ({result, listKey}) => {
         <li key={listKey} className="result">
             <div className="res-content">
                 <div className="res-img-container">
-                    <img src={resDetails.imgLink} alt={resDetails.imgAlt}/>
+                    <img src={resDetails.imgLink} alt={resDetails.imgAlt}  onClick={() => navigate(`/object/${listKey}`)}/>
                 </div>
                 <div className="res-text">
-                    <h3 onClick={() => navigate(`/object/${listKey}`)}>{resDetails.title}</h3>
+                    <h3>{resDetails.title}</h3>
                     <p>{resDetails.description}</p>
                     <p>{resDetails.museum}</p>
                 </div>
