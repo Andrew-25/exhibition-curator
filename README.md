@@ -9,3 +9,9 @@ To run this app on you computer you will need to install or have installed Node.
 You can then run `npm install` to install the required dependancies.
 
 To use the app on your computer you can then run `npm start`.
+
+## Hosted Site
+
+You can visit the hosted version of this app at https://exhibition-curator-vo23.onrender.com/
+
+The app was hosted using Renders free service.
